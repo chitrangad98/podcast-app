@@ -37,12 +37,10 @@ export default async function handler(req, res) {
     !personalityParams ||
     Object.keys(personalityParams).length !== 2
   ) {
-    return res
-      .status(400)
-      .json({
-        error:
-          "Invalid input parameters: personalities, topic, or personalityParams missing/incorrect.",
-      });
+    return res.status(400).json({
+      error:
+        "Invalid input parameters: personalities, topic, or personalityParams missing/incorrect.",
+    });
   }
 
   const [p1Name, p2Name] = personalities;
@@ -50,11 +48,9 @@ export default async function handler(req, res) {
   const p2Params = personalityParams[p2Name];
 
   if (!p1Params || !p2Params) {
-    return res
-      .status(400)
-      .json({
-        error: "Personality parameters missing for one or more personalities.",
-      });
+    return res.status(400).json({
+      error: "Personality parameters missing for one or more personalities.",
+    });
   }
 
   try {
@@ -126,10 +122,8 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("Error starting conversation:", error);
-    res
-      .status(500)
-      .json({
-        error: `Failed to start conversation due to an internal error: ${error.message}`,
-      });
+    res.status(500).json({
+      error: `Failed to start conversation due to an internal error: ${error.message}`,
+    });
   }
 }
