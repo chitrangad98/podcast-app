@@ -1,6 +1,7 @@
 // api/start-conversation.js
 // This function starts the conversation by generating the first message,
-// generating its audio, uploading to S3, and returning a pre-signed URL.
+// generating its audio with a gender-appropriate voice, uploading to S3,
+// and returning a pre-signed URL and the S3 Key.
 
 import OpenAI from "openai";
 import AWS from "aws-sdk"; // Import AWS SDK
@@ -23,6 +24,27 @@ const s3 = new AWS.S3({
 const S3_BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME;
 const S3_FOLDER = "audio/"; // Optional: store audio in a specific folder
 
+// --- Mapping of personalities to OpenAI TTS voices ---
+// Choose voices based on perceived gender or desired tone.
+// 'alloy', 'fable', 'onyx' are generally male.
+// 'nova', 'shimmer', 'echo' are generally female.
+const personalityVoices = {
+  "Kanye West": "alloy", // Male voice
+  "Elon Musk": "fable", // Male voice
+  "Oprah Winfrey": "nova", // Female voice
+  "Neil deGrasse Tyson": "alloy", // Male voice
+  "Taylor Swift": "shimmer", // Female voice
+  "Dwayne Johnson": "onyx", // Male voice
+  "Bill Gates": "fable", // Male voice
+  "Steve Jobs": "alloy", // Male voice
+  Beyoncé: "echo", // Female voice
+  "LeBron James": "onyx", // Male voice
+  "J.K. Rowling": "shimmer", // Female voice
+  // Add voices for other personalities you add
+  // Default fallback voice if personality not found in map:
+  default: "alloy",
+};
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
@@ -37,10 +59,12 @@ export default async function handler(req, res) {
     !personalityParams ||
     Object.keys(personalityParams).length !== 2
   ) {
-    return res.status(400).json({
-      error:
-        "Invalid input parameters: personalities, topic, or personalityParams missing/incorrect.",
-    });
+    return res
+      .status(400)
+      .json({
+        error:
+          "Invalid input parameters: personalities, topic, or personalityParams missing/incorrect.",
+      });
   }
 
   const [p1Name, p2Name] = personalities;
@@ -48,9 +72,11 @@ export default async function handler(req, res) {
   const p2Params = personalityParams[p2Name];
 
   if (!p1Params || !p2Params) {
-    return res.status(400).json({
-      error: "Personality parameters missing for one or more personalities.",
-    });
+    return res
+      .status(400)
+      .json({
+        error: "Personality parameters missing for one or more personalities.",
+      });
   }
 
   try {
@@ -82,13 +108,13 @@ export default async function handler(req, res) {
     const speaker = p1Name; // Assuming p1Name speaks first as per prompt
 
     // --- Step 2: Generate audio for the first message using Text-to-Speech ---
-    const voice1 = "alloy"; // Example voice for personality 1
-    const voice2 = "fable"; // Example voice for personality 2
-    const selectedVoice = speaker === p1Name ? voice1 : voice2;
+    // Select the voice based on the speaker's name using the mapping
+    const selectedVoice =
+      personalityVoices[speaker] || personalityVoices["default"]; // Use default if personality not in map
 
     const audioResponse = await openai.audio.speech.create({
       model: "tts-1",
-      voice: selectedVoice,
+      voice: selectedVoice, // Use the selected voice
       input: firstMessageText,
       response_format: "mp3", // Specify the format
     });
@@ -97,10 +123,10 @@ export default async function handler(req, res) {
     const audioBuffer = Buffer.from(await audioResponse.arrayBuffer());
 
     // --- Step 3: Upload audio to S3 and get a pre-signed URL ---
-    const filename = `${S3_FOLDER}${uuidv4()}.mp3`; // Unique filename
+    const filename = `${S3_FOLDER}${uuidv4()}.mp3`; // Unique filename (S3 Key)
     const uploadParams = {
       Bucket: S3_BUCKET_NAME,
-      Key: filename,
+      Key: filename, // This is the S3 Key
       Body: audioBuffer,
       ContentType: "audio/mpeg", // Important for playback
     };
@@ -110,20 +136,23 @@ export default async function handler(req, res) {
     // Generate a pre-signed URL for the uploaded object
     const audioUrl = s3.getSignedUrl("getObject", {
       Bucket: S3_BUCKET_NAME,
-      Key: filename,
-      Expires: 60 * 5, // URL expires in 5 minutes (adjust as needed)
+      Key: filename, // Use the S3 Key to generate the URL
+      Expires: 60 * 5, // URL expires in 5 minutes (adjust as needed for live)
     });
 
-    // Return the message text and audio URL
+    // Return the message text, audio URL, AND the S3 Key
     res.status(200).json({
       speaker: speaker,
       text: firstMessageText,
-      audioUrl: audioUrl, // Return the S3 pre-signed URL
+      audioUrl: audioUrl, // Temporary URL for live playback
+      audioKey: filename, // Include the S3 Key here
     });
   } catch (error) {
     console.error("Error starting conversation:", error);
-    res.status(500).json({
-      error: `Failed to start conversation due to an internal error: ${error.message}`,
-    });
+    res
+      .status(500)
+      .json({
+        error: `Failed to start conversation due to an internal error: ${error.message}`,
+      });
   }
 }

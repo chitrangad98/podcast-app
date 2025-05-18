@@ -3,13 +3,14 @@ import React from "react";
 
 function TopicInput({ topic, setTopic }) {
   return (
-    <div>
-      <h2>Enter Topic</h2>
+    <div className="topic-input-container">
+      <h2 className="topic-input-title">Enter Context</h2>
       <input
         type="text"
         value={topic}
         onChange={(e) => setTopic(e.target.value)}
-        placeholder="e.g., The future of transportation"
+        placeholder="enter any topic"
+        className="topic-input"
       />
     </div>
   );
