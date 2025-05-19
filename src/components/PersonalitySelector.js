@@ -17,6 +17,7 @@ const availablePersonalities = [
   "Beyoncé", // Added
   "LeBron James", // Added
   "J.K. Rowling", // Added
+
   // Add more personalities here as desired
 ];
 

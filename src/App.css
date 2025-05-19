@@ -158,6 +158,8 @@ flex-direction: column;
   width: 100%;
   display: flex;
   flex-direction: row;
+padding: 0 6rem;
+ gap: 5rem;
 }
 
 @keyframes flowGradient {
@@ -173,6 +175,7 @@ flex-direction: column;
   width: 80px;
   height: 80px;
   border-radius: 50%;
+margin-bottom: 1em;
   background: linear-gradient(
     135deg,
     var(--shade-1),
@@ -191,6 +194,7 @@ flex-direction: column;
   position: relative;
   width: 80px;
   height: 80px;
+  margin-bottom: 1em;
   border-radius: 50%;
   background: linear-gradient(
     135deg,
@@ -401,7 +405,7 @@ button:disabled {
   padding: 0.5rem;
   border: 1px solid var(--shade-1);
   border-radius: var(--border-radius);
-  background-color: var(--light-blue);
+  background-color: transparent;
   color: var(--light-text);
   width: 100%;
   font-size: 0.8rem;
@@ -634,10 +638,10 @@ padding: 2rem;
 }
 
 .dropdown-list-item.selected {
-  background-color: #0077cc; /* Blue background for selected item */
+  background-color: #0089ea; /* Blue background for selected item */
   color: white;
   padding-right:1em;
-  width: fit-content;
+ 
 border-top-right-radius: 0.2em;
 
 border-bottom-right-radius: 1em;
@@ -692,4 +696,311 @@ border-bottom-right-radius: 1em;
 .venn-logo {
   width: 4rem;
   height: 4rem;
+}
+
+
+/* Improved Responsive CSS */
+
+/* Base styles remain the same */
+:root {
+  --dark-blue: #1a2a3a;
+  --cream: #f5f0e5;
+  --light-blue: #2c3e50;
+  --accent-blue: #3498db;
+  --dark-text: #222;
+  --light-text: #f8f9fa;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+  --warning: #f39c12;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+  --bg-cream: #fdf6e3;
+  --text-dark: #2d2d2d;
+  --shade-1: #ff6347;   /* orange-red */
+  --shade-2: #f1c40f;   /* sun yellow */
+  --shade-3: #87cefa; 
+  --orange-red: #ff6347;
+  --orange-red-60: rgba(255, 99, 71, 0.6);
+  --sun-yellow: #f1c40f;
+  --sun-yellow-60: rgba(241, 196, 15, 0.6);
+  --sky-blue: #87cefa;
+  --sky-blue-60: rgba(135, 206, 250, 0.6);
+  --panel-bg: rgba(255, 255, 255, 0.7);
+  --panel-blur: blur(12px);
+  --button-radius: 8px;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+  
+  /* Responsive spacing variables */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: var(--dark-blue);
+  color: var(--light-text);
+  line-height: 1.6;
+}
+
+/* App container - make it more responsive */
+.App {
+  width: 95%; /* Start wider on small screens */
+  max-width: 1200px; /* Cap the max width */
+  margin: 0 auto;
+  padding: 1rem 0; /* Smaller top padding on mobile */
+}
+
+/* Header - improved responsive layout */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: var(--spacing-md); /* Add gap for when items wrap */
+}
+
+.header h1 {
+  color: var(--cream);
+  padding: 0.5rem 1rem; /* Slightly reduced padding */
+  border-radius: var(--border-radius);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: clamp(1.5rem, 5vw, 2rem); /* Responsive font size */
+}
+
+.saved-conversations-link {
+  color: var(--bg-cream);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.2rem 0.8rem;
+  border: 1px solid var(--shade-1);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Personality Row - make it responsive */
+.personality-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping */
+  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md); /* Add gap for when items wrap */
+}
+
+.personality-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--spacing-md); /* Add margin for when items wrap */
+}
+
+/* Setup Section - improve for mobile */
+.setup-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.setup-section-inner {
+  display: flex;
+  flex-direction: column; /* Stack on mobile by default */
+  margin-top: var(--spacing-md);
+  width: 100%; /* Full width on mobile */
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+/* Personality circles - make them responsive */
+.personality-gradient-circle-1,
+.personality-gradient-circle-2 {
+  width: 60px; /* Smaller on mobile */
+  height: 60px;
+}
+
+/* Topic Input - improve mobile layout */
+.topic-input-container {
+  width: 100%; /* Full width on mobile */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topic-input {
+  width: 100%;
+  height: auto;
+  padding: 0.5rem 1rem;
+}
+
+/* Control Panel - improve mobile layout */
+.control-panel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* Allow wrapping */
+  gap: var(--spacing-md);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Make all control buttons more responsive */
+.control-button-start-button,
+.control-button-stop-button,
+.control-button-clear-button,
+.control-button-save-button {
+  width: auto; /* Auto width instead of percentage */
+  min-width: 80px; /* Minimum width */
+  padding: 0.5em 1em;
+  margin: 0.25em;
+  white-space: nowrap; /* Keep text on one line */
+}
+
+/* User input container - improve for mobile */
+.user-input-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column on mobile by default */
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+/* Conversation display - improve for mobile */
+.conversation-section {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  max-height: 400px; /* Smaller on mobile */
+}
+
+.message {
+  padding: var(--spacing-md);
+}
+
+/* Saved conversations list - improve for mobile */
+.saved-conversations-list {
+  margin: var(--spacing-md);
+  padding: var(--spacing-lg);
+  width: auto; /* Auto width */
+  max-width: 95%; /* Limit max width */
+}
+
+/* Dropdown improvements for mobile */
+.custom-dropdown {
+  min-width: 100%; /* Make dropdowns full width on mobile */
+}
+
+/* Improved responsive breakpoints */
+/* Small devices (landscape phones) */
+@media (min-width: 576px) {
+  .App {
+    width: 90%;
+    padding: 1.5rem 0;
+  }
+  
+  .personality-gradient-circle-1,
+  .personality-gradient-circle-2 {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 768px) {
+  .App {
+    width: 85%;
+  }
+  
+  .setup-section-inner {
+    flex-direction: row; /* Switch to row layout on tablets */
+    justify-content: space-between;
+    width: 90%;
+  }
+  
+  .topic-input-container {
+    width: 40%;
+  }
+  
+  .conversation-section {
+    max-height: 500px;
+  }
+  
+  .user-input-container {
+    grid-template-columns: 1fr 2fr; /* Return to original layout on tablets */
+  }
+  
+  .personality-gradient-circle-1,
+  .personality-gradient-circle-2 {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 992px) {
+  .App {
+    width: 80%;
+    padding: 2rem 0;
+  }
+  
+  .setup-section-inner {
+    width: 70%;
+  }
+  
+  .topic-input-container {
+    width: 30%;
+  }
+  
+  .conversation-section {
+    max-height: 600px;
+  }
+}
+
+/* Extra large devices */
+@media (min-width: 1200px) {
+  .App {
+    width: 75%;
+  }
+}
+
+/* Fix for some specific components */
+@media (max-width: 480px) {
+  /* Very small phones */
+  .header {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .personality-row {
+    justify-content: center;
+  }
+  
+  .control-panel {
+    flex-direction: column;
+  }
+  
+  .control-button-start-button,
+  .control-button-stop-button,
+  .control-button-clear-button,
+  .control-button-save-button {
+    width: 80%; /* Wider buttons on very small screens */
+    margin: 0.25em auto;
+  }
 }
