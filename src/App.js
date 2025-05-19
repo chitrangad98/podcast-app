@@ -366,7 +366,31 @@ function App() {
       <div className="header">
         <h1 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           {" "}
-          <PiGooglePodcastsLogo />
+          <svg
+            className="venn-logo"
+            viewBox="0 0 200 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <filter id="mesh-blur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
+              </filter>
+            </defs>
+            <circle
+              cx="70"
+              cy="50"
+              r="40"
+              fill="var(--orange-red-60)"
+              filter="url(#mesh-blur)"
+            />
+            <circle
+              cx="130"
+              cy="50"
+              r="40"
+              fill="var(--sky-blue-60)"
+              filter="url(#mesh-blur)"
+            />
+          </svg>
           ConvoLab
         </h1>
         <Link to="/saved" className="saved-conversations-link">
@@ -392,7 +416,9 @@ function App() {
             }
             className="control-button-start-button"
           >
-            {isLoading && conversation.length === 0 ? "STARTING..." : "START"}
+            {isLoading && conversation.length === 0
+              ? "STARTING..."
+              : "Start Conversation"}
           </button>
           <ControlPanel
             onStart={handleStartConversation}
@@ -441,9 +467,9 @@ function App() {
           </button>
           <h4
             className="topic-input-title"
-            style={{ fontSize: "0.6rem", color: "lightgrey" }}
+            style={{ fontSize: "0.8rem", color: "lightgrey" }}
           >
-            * This will be naturally injected into the conversation as context
+            * This will be naturally injected into the conversation as context.
           </h4>
         </div>
 

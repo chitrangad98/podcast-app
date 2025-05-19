@@ -26,7 +26,7 @@ function ConversationDisplay({ conversation }) {
         style={{
           height: "400px",
           overflowY: "scroll",
-          border: "1px solid #ccc",
+          border: "1px solid var(--shade-1)",
           padding: "10px",
           borderRadius: "8px",
         }}
